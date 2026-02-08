@@ -1,0 +1,32 @@
+{{define "thread"}}
+{{template "header.html" .}}
+  <h2>Thread #{{.Thread.ThreadNo}} on /{{.Board.Name}}/</h2>
+  <section class="thread-area">
+    {{range .Posts}}
+      <article class="post">
+        <header>
+          <span class="postno">No. {{.Post.PostNo}}</span>
+          <span class="name">{{.Post.Name}}</span>
+          <time>{{.Post.Time}}</time>
+        </header>
+        <div class="comment">{{.Post.Comment}}</div>
+        <div class="post-images">
+          {{range .Images}}
+            {{ $board := $.Board.Name }}
+            {{ if .LocalPath }}
+              {{ $img := basename .LocalPath }}
+              {{ if .LocalThumbnailPath }}
+                <a href="/images/{{$board}}/{{$img}}"><img src="/images/{{$board}}/{{basename .LocalThumbnailPath}}" alt="img"></a>
+              {{ else }}
+                <a href="/images/{{$board}}/{{$img}}"><img src="/images/{{$board}}/{{$img}}" alt="img"></a>
+              {{ end }}
+            {{ else }}
+              <a href="/images/{{$board}}/{{.Tim}}{{.Ext}}"><img src="/images/{{$board}}/{{.Tim}}{{.Ext}}" alt="img"></a>
+            {{ end }}
+          {{end}}
+        </div>
+      </article>
+    {{end}}
+  </section>
+{{template "footer.html" .}}
+{{end}}

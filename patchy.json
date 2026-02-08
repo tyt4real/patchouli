@@ -1,0 +1,9 @@
+{
+    "boards": [
+        {
+            "name": "soy",
+            "site_url": "https://soyjak.st"
+        }
+    ],
+    "cooldown_seconds": 1
+}

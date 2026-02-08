@@ -1,0 +1,27 @@
+{{define "board"}}
+{{template "header.html" .}}
+  <h2>Board: /{{.Board.Name}}/</h2>
+  <div class="threads">
+    {{range .Threads}}
+      <article class="thread">
+        <a class="thread-link" href="/boards/{{$.Board.Name}}/thread/{{.Thread.ThreadNo}}">
+          <div class="thumb">
+            {{if .Thumb}}
+              {{if .Thumb.LocalThumbnailPath}}
+                <img src="/images/{{$.Board.Name}}/{{basename .Thumb.LocalThumbnailPath}}" alt="thumb">
+              {{else if .Thumb.LocalPath}}
+                <img src="/images/{{$.Board.Name}}/{{basename .Thumb.LocalPath}}" alt="thumb">
+              {{else}}
+                <img src="/images/{{$.Board.Name}}/{{.Thumb.Tim}}{{.Thumb.Ext}}" alt="thumb">
+              {{end}}
+            {{end}}
+          </div>
+          <div class="meta">#{{.Thread.ThreadNo}} — {{.Thread.LastModified}}</div>
+        </a>
+      </article>
+    {{else}}
+      <p>No threads</p>
+    {{end}}
+  </div>
+{{template "footer.html" .}}
+{{end}}
