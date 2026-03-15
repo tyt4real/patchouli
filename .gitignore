@@ -1,5 +1,6 @@
 data/*
 bin
-
+web/views/*templ_gen.go
+templdocs/
 webui
 patchy

@@ -1,0 +1,113 @@
+package web
+
+templ layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ title }</title>
+			<style>
+				*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+				:root {
+					--bg:       #f6f6f4;
+					--surface:  #ffffff;
+					--border:   #e2e2de;
+					--text:     #1a1a18;
+					--muted:    #6b6b66;
+					--accent:   #1d6fd8;
+					--accent-h: #1558b0;
+					--radius:   8px;
+					--font:     'Georgia', serif;
+					--mono:     'Menlo', 'Consolas', monospace;
+				}
+
+				@media (prefers-color-scheme: dark) {
+					:root {
+						--bg:      #181816;
+						--surface: #232320;
+						--border:  #2e2e2a;
+						--text:    #e8e8e2;
+						--muted:   #8a8a82;
+						--accent:  #5a9cf8;
+						--accent-h:#7ab4ff;
+					}
+				}
+
+				body {
+					font-family: var(--font);
+					background: var(--bg);
+					color: var(--text);
+					min-height: 100vh;
+					line-height: 1.6;
+				}
+
+				.shell {
+					max-width: 860px;
+					margin: 0 auto;
+					padding: 2.5rem 1.5rem 4rem;
+				}
+
+				header {
+					border-bottom: 1px solid var(--border);
+					padding-bottom: 1.25rem;
+					margin-bottom: 2rem;
+				}
+
+				header .wordmark {
+					font-family: var(--mono);
+					font-size: 0.8rem;
+					letter-spacing: 0.12em;
+					text-transform: uppercase;
+					color: var(--muted);
+					text-decoration: none;
+				}
+
+				header .wordmark:hover { color: var(--text); }
+
+				a {
+					color: var(--accent);
+					text-decoration: none;
+				}
+
+				a:hover { color: var(--accent-h); text-decoration: underline; }
+
+				.back-link {
+					display: inline-flex;
+					align-items: center;
+					gap: 0.3rem;
+					font-family: var(--mono);
+					font-size: 0.78rem;
+					letter-spacing: 0.05em;
+					color: var(--muted);
+					margin-bottom: 1.75rem;
+				}
+
+				.back-link:hover { color: var(--accent); text-decoration: none; }
+
+				h1 {
+					font-size: 1.6rem;
+					font-weight: normal;
+					letter-spacing: -0.02em;
+					margin-bottom: 0.3rem;
+				}
+
+				.page-meta {
+					font-size: 0.85rem;
+					color: var(--muted);
+					font-family: var(--mono);
+					margin-bottom: 2rem;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="shell">
+				<header>
+					<a class="wordmark" href="/">Patchy — archive</a>
+				</header>
+				{ children... }
+			</div>
+		</body>
+	</html>
+}

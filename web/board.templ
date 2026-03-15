@@ -1,0 +1,132 @@
+package web
+
+import (
+	"fmt"
+	"patchy/database"
+	"time"
+)
+
+templ boardPage(boardName string, threads []database.Thread) {
+	@layout("Patchy — /" + boardName + "/") {
+		<style>
+			.threads-table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: 0.9rem;
+			}
+
+			.threads-table thead tr {
+				border-bottom: 2px solid var(--border);
+			}
+
+			.threads-table th {
+				text-align: left;
+				padding: 0.5rem 0.75rem 0.7rem;
+				font-family: var(--mono);
+				font-size: 0.72rem;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: var(--muted);
+				font-weight: normal;
+			}
+
+			.threads-table th:first-child { padding-left: 0; }
+			.threads-table th:last-child  { padding-right: 0; text-align: right; }
+
+			.threads-table td {
+				padding: 0.65rem 0.75rem;
+				border-bottom: 1px solid var(--border);
+				vertical-align: middle;
+			}
+
+			.threads-table td:first-child { padding-left: 0; }
+			.threads-table td:last-child  { padding-right: 0; text-align: right; }
+
+			.thread-no {
+				font-family: var(--mono);
+				font-size: 0.85rem;
+				color: var(--accent);
+			}
+
+			.thread-date {
+				font-family: var(--mono);
+				font-size: 0.82rem;
+				color: var(--muted);
+			}
+
+			.badge {
+				display: inline-block;
+				font-family: var(--mono);
+				font-size: 0.7rem;
+				letter-spacing: 0.06em;
+				padding: 0.15rem 0.5rem;
+				border-radius: 4px;
+				border: 1px solid var(--border);
+				color: var(--muted);
+			}
+
+			.badge.archived {
+				background: #edf7ed;
+				border-color: #b2ddb2;
+				color: #2a6e2a;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				.badge.archived {
+					background: #1a2e1a;
+					border-color: #2a5a2a;
+					color: #6dbd6d;
+				}
+			}
+
+			.empty-state {
+				padding: 3rem 0;
+				color: var(--muted);
+				font-family: var(--mono);
+				font-size: 0.85rem;
+			}
+		</style>
+
+		<a class="back-link" href="/">← all boards</a>
+
+		<h1>/{ boardName }/</h1>
+		<p class="page-meta">{ fmt.Sprintf("%d threads", len(threads)) }</p>
+
+		if len(threads) == 0 {
+			<p class="empty-state">no threads found for this board.</p>
+		} else {
+			<table class="threads-table">
+				<thead>
+					<tr>
+						<th>Thread no.</th>
+						<th>Last modified</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, t := range threads {
+						<tr>
+							<td class="thread-no">{ fmt.Sprintf("%d", t.ThreadNo) }</td>
+							<td class="thread-date">{ formatUnix(t.LastModified) }</td>
+							<td>
+								if t.IsArchived == 1 {
+									<span class="badge archived">archived</span>
+								} else {
+									<span class="badge">live</span>
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+	}
+}
+
+// formatUnix converts a Unix timestamp to a readable date string.
+func formatUnix(ts int) string {
+	if ts == 0 {
+		return "—"
+	}
+	return time.Unix(int64(ts), 0).UTC().Format("2006-01-02 15:04")
+}

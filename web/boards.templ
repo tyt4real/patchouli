@@ -1,0 +1,65 @@
+package web
+
+import "patchy/database"
+
+templ boardsPage(boards []database.Board) {
+	@layout("Patchy — Boards") {
+		<style>
+			.boards-grid {
+				display: grid;
+				gap: 0;
+			}
+
+			.board-row {
+				display: flex;
+				align-items: baseline;
+				gap: 1rem;
+				padding: 0.9rem 0;
+				border-bottom: 1px solid var(--border);
+			}
+
+			.board-row:first-child { border-top: 1px solid var(--border); }
+
+			.board-slug {
+				font-family: var(--mono);
+				font-size: 0.95rem;
+				font-weight: bold;
+				min-width: 5rem;
+				color: var(--accent);
+			}
+
+			.board-slug:hover { color: var(--accent-h); text-decoration: none; }
+
+			.board-site {
+				font-size: 0.82rem;
+				color: var(--muted);
+				font-family: var(--mono);
+			}
+
+			.empty-state {
+				padding: 3rem 0;
+				color: var(--muted);
+				font-family: var(--mono);
+				font-size: 0.85rem;
+			}
+		</style>
+
+		<h1>Archived boards</h1>
+		<p class="page-meta">{ len(boards) } boards indexed</p>
+
+		if len(boards) == 0 {
+			<p class="empty-state">no boards found.</p>
+		} else {
+			<div class="boards-grid">
+				for _, b := range boards {
+					<div class="board-row">
+						<a class="board-slug" href={ templ.SafeURL("/board/" + b.Name) }>
+							/{ b.Name }/
+						</a>
+						<span class="board-site">{ b.SiteURL }</span>
+					</div>
+				}
+			</div>
+		}
+	}
+}

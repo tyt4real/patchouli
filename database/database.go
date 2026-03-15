@@ -253,3 +253,53 @@ func InsertImage(db *sql.DB, image Image) (int, error) {
 
 	return id, nil
 }
+
+// GetBoards returns all boards in the database.
+func GetBoards(db *sql.DB) ([]Board, error) {
+	rows, err := db.Query("SELECT id, name, site_url FROM boards ORDER BY name ASC")
+	if err != nil {
+		return nil, fmt.Errorf("failed to query boards: %w", err)
+	}
+	defer rows.Close()
+
+	var boards []Board
+	for rows.Next() {
+		var b Board
+		if err := rows.Scan(&b.ID, &b.Name, &b.SiteURL); err != nil {
+			return nil, fmt.Errorf("failed to scan board row: %w", err)
+		}
+		boards = append(boards, b)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows error: %w", err)
+	}
+	return boards, nil
+}
+
+// GetThreadsByBoard returns threads for a given board name.
+func GetThreadsByBoard(db *sql.DB, boardName string) ([]Thread, error) {
+	query := `SELECT t.id, t.board_id, t.thread_no, t.last_modified, t.is_sticky, t.is_closed, t.is_archived, t.op_post_id
+			  FROM threads t
+			  JOIN boards b ON t.board_id = b.id
+			  WHERE b.name = ?
+			  ORDER BY t.last_modified DESC`
+
+	rows, err := db.Query(query, boardName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query threads for board %s: %w", boardName, err)
+	}
+	defer rows.Close()
+
+	var threads []Thread
+	for rows.Next() {
+		var t Thread
+		if err := rows.Scan(&t.ID, &t.BoardID, &t.ThreadNo, &t.LastModified, &t.IsSticky, &t.IsClosed, &t.IsArchived, &t.OpPostID); err != nil {
+			return nil, fmt.Errorf("failed to scan thread row: %w", err)
+		}
+		threads = append(threads, t)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows error: %w", err)
+	}
+	return threads, nil
+}
