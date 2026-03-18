@@ -1,6 +1,6 @@
 
 # Patchy
-
+![The woman herself](./web/static/patchy.png)
 Patchy is a small, self-hosted imageboard / crawler web application written in Go. It provides a lightweight server, a web UI, and a crawler component for fetching and organizing images into local storage.
 
 ## Features
