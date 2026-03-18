@@ -17,6 +17,9 @@ patchy:
 	@echo "=> building patchouli"
 	go build -o bin/patchy ./main.go
 
+dev:
+	@echo "=> starting development server"
+	~/go/bin/templ generate --watch --proxy="http://localhost:8080" --cmd="go run ./cmd/webui"
 
 clean:
 	@echo "=> clean"

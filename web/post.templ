@@ -1,0 +1,78 @@
+package web
+
+import (
+	"fmt"
+	"patchy/database"
+)
+
+templ postElement(p database.Post, images []database.Image, isOP bool) {
+	<article class={ "post", templ.KV("post-op", isOP), templ.KV("post-reply", !isOP) } id={ fmt.Sprintf("p%d", p.PostNo) }>
+		<header class="post-header">
+			if p.Subject != "" {
+				<span class="post-subject">{ p.Subject }</span>
+			}
+			<span class="post-name">
+				if p.Name != "" {
+					{ p.Name }
+				} else {
+					Anonymous
+				}
+			</span>
+			if p.Trip != "" {
+				<span class="post-trip">{ p.Trip }</span>
+			}
+			if p.Capcode != "" {
+				<span class="post-capcode">## { p.Capcode }</span>
+			}
+			if p.IDCode != "" {
+				<span class="post-id" title="Poster ID">ID: { p.IDCode }</span>
+			}
+			if p.Country != "" {
+				<span class="post-country" title={ p.CountryName }>{ p.Country }</span>
+			}
+			<span class="post-time">{ formatUnix(p.Time) }</span>
+			<a class="post-no-link" href={ templ.SafeURL(fmt.Sprintf("#p%d", p.PostNo)) }>
+				No.{ fmt.Sprintf("%d", p.PostNo) }
+			</a>
+		</header>
+
+		if len(images) > 0 {
+			<div class="post-images">
+				for _, img := range images {
+					@imageElement(img)
+				}
+			</div>
+		}
+
+		if p.Comment != "" {
+			<div class="post-comment">
+				@templ.Raw(formatComment(p.Comment))
+			</div>
+		}
+	</article>
+}
+
+templ imageElement(img database.Image) {
+	<figure class="post-image">
+		if img.IsFileDeleted == 1 {
+			<div class="image-deleted">file deleted</div>
+		} else if img.LocalThumbnailPath != "" {
+			<a href={ templ.SafeURL(img.LocalPath) } target="_blank" rel="noopener">
+				<img
+					src={ img.LocalThumbnailPath }
+					alt={ img.Filename + img.Ext }
+					width={ fmt.Sprintf("%d", img.ThumbnailWidth) }
+					height={ fmt.Sprintf("%d", img.ThumbnailHeight) }
+					loading="lazy"
+				/>
+			</a>
+		} else {
+			<div class="image-unavailable">image unavailable</div>
+		}
+		<figcaption class="image-meta">
+			{ img.Filename }{ img.Ext }
+			<span class="image-dim">{ fmt.Sprintf("%d×%d", img.Width, img.Height) }</span>
+			<span class="image-size">{ formatBytes(img.Fsize) }</span>
+		</figcaption>
+	</figure>
+}

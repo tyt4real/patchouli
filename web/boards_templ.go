@@ -43,14 +43,14 @@ func boardsPage(boards []database.Board) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t.boards-grid {\n\t\t\t\tdisplay: grid;\n\t\t\t\tgap: 0;\n\t\t\t}\n\n\t\t\t.board-row {\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: baseline;\n\t\t\t\tgap: 1rem;\n\t\t\t\tpadding: 0.9rem 0;\n\t\t\t\tborder-bottom: 1px solid var(--border);\n\t\t\t}\n\n\t\t\t.board-row:first-child { border-top: 1px solid var(--border); }\n\n\t\t\t.board-slug {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.95rem;\n\t\t\t\tfont-weight: bold;\n\t\t\t\tmin-width: 5rem;\n\t\t\t\tcolor: var(--accent);\n\t\t\t}\n\n\t\t\t.board-slug:hover { color: var(--accent-h); text-decoration: none; }\n\n\t\t\t.board-site {\n\t\t\t\tfont-size: 0.82rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t}\n\n\t\t\t.empty-state {\n\t\t\t\tpadding: 3rem 0;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\t\t</style> <h1>Archived boards</h1><p class=\"page-meta\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t.boards-grid {\n\t\t\t\tdisplay: grid;\n\t\t\t\tgap: 0;\n\t\t\t}\n\n\t\t\t.board-row {\n\t\t\t\tdisplay: flex;\n\t\t\t\talign-items: baseline;\n\t\t\t\tgap: 1rem;\n\t\t\t\tpadding: 0.9rem 0;\n\t\t\t\tborder-bottom: 1px solid var(--border);\n\t\t\t}\n\n\t\t\t.board-row:first-child { border-top: 1px solid var(--border); }\n\n\t\t\t.board-slug {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.95rem;\n\t\t\t\tfont-weight: bold;\n\t\t\t\tmin-width: 5rem;\n\t\t\t\tcolor: var(--accent);\n\t\t\t}\n\n\t\t\t.board-slug:hover { color: var(--accent-h); text-decoration: none; }\n\n\t\t\t.board-site {\n\t\t\t\tfont-size: 0.82rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t}\n\n\t\t\t.empty-state {\n\t\t\t\tpadding: 3rem 0;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\t\t\t#patchy {\n\t\t\t\ttext-align: center;\n\t\t\t\tmargin-top: 3rem;\n\t\t\t\tmargin-bottom: 3rem;\n\t\t\t\theight: 10%;\n\t\t\t\tfilter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));\n\t\t\t}\n\t\t</style> <img id=\"patchy\" src=\"/static/patchy.png\" alt=\"Patchy logo\" height=\"300\" width=\"196\" style=\"margin-left: auto; margin-right: auto; display: block;\"><h1>Archived boards</h1><p class=\"page-meta\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(len(boards))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 48, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 55, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -78,7 +78,7 @@ func boardsPage(boards []database.Board) templ.Component {
 					var templ_7745c5c3_Var4 templ.SafeURL
 					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/board/" + b.Name))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 56, Col: 68}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 63, Col: 68}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 					if templ_7745c5c3_Err != nil {
@@ -91,7 +91,7 @@ func boardsPage(boards []database.Board) templ.Component {
 					var templ_7745c5c3_Var5 string
 					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(b.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 57, Col: 16}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 64, Col: 16}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 					if templ_7745c5c3_Err != nil {
@@ -104,7 +104,7 @@ func boardsPage(boards []database.Board) templ.Component {
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(b.SiteURL)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 59, Col: 42}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/boards.templ`, Line: 66, Col: 42}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {

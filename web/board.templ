@@ -106,7 +106,7 @@ templ boardPage(boardName string, threads []database.Thread) {
 				<tbody>
 					for _, t := range threads {
 						<tr>
-							<td class="thread-no">{ fmt.Sprintf("%d", t.ThreadNo) }</td>
+							<td class="thread-no"><a href={ templ.SafeURL(fmt.Sprintf("/board/%s/%d", boardName, t.ThreadNo)) }>{ fmt.Sprintf("%d", t.ThreadNo) }</a></td>
 							<td class="thread-date">{ formatUnix(t.LastModified) }</td>
 							<td>
 								if t.IsArchived == 1 {

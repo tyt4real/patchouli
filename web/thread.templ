@@ -1,0 +1,222 @@
+package web
+
+import (
+	"fmt"
+	"html"
+	"patchy/database"
+	"regexp"
+	"strings"
+)
+
+templ threadPage(boardName string, threadNo int, posts []database.Post, images map[int][]database.Image) {
+	@layout(fmt.Sprintf("Patchy — /%s/ — Thread %d", boardName, threadNo)) {
+		<style>
+			.thread { display: flex; flex-direction: column; gap: 0; }
+
+			.post {
+				padding: 0.9rem 0;
+				border-bottom: 1px solid var(--border);
+			}
+
+			.post-op {
+				padding-bottom: 1.25rem;
+				margin-bottom: 0.25rem;
+			}
+
+			.post-reply {
+				padding-left: 1.25rem;
+				border-left: 2px solid var(--border);
+				margin-left: 0.5rem;
+			}
+
+			.post-header {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: baseline;
+				gap: 0.4rem 0.6rem;
+				margin-bottom: 0.55rem;
+				font-size: 0.82rem;
+			}
+
+			.post-subject {
+				font-weight: bold;
+				color: var(--text);
+				font-size: 0.9rem;
+			}
+
+			.post-name  { color: #117a65; font-weight: bold; }
+			.post-trip  { color: var(--muted); font-family: var(--mono); font-size: 0.78rem; }
+			.post-capcode {
+				background: #c0392b;
+				color: #fff;
+				font-family: var(--mono);
+				font-size: 0.7rem;
+				padding: 0.1rem 0.4rem;
+				border-radius: 3px;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				.post-name { color: #48c9b0; }
+			}
+
+			.post-id {
+				font-family: var(--mono);
+				font-size: 0.75rem;
+				background: var(--border);
+				padding: 0.1rem 0.4rem;
+				border-radius: 3px;
+				color: var(--muted);
+			}
+
+			.post-country {
+				font-family: var(--mono);
+				font-size: 0.75rem;
+				color: var(--muted);
+				border: 1px solid var(--border);
+				padding: 0.05rem 0.35rem;
+				border-radius: 3px;
+			}
+
+			.post-time {
+				color: var(--muted);
+				font-family: var(--mono);
+				font-size: 0.78rem;
+			}
+
+			.post-no-link {
+				font-family: var(--mono);
+				font-size: 0.78rem;
+				color: var(--muted);
+			}
+
+			.post-no-link:hover { color: var(--accent); text-decoration: none; }
+
+			.post-images {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				margin-bottom: 0.6rem;
+			}
+
+			.post-image { margin: 0; }
+
+			.post-image img {
+				display: block;
+				max-width: 200px;
+				max-height: 200px;
+				border-radius: 4px;
+				border: 1px solid var(--border);
+				object-fit: cover;
+			}
+
+			.image-meta {
+				font-size: 0.72rem;
+				color: var(--muted);
+				font-family: var(--mono);
+				margin-top: 0.25rem;
+				max-width: 200px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.image-dim, .image-size {
+				margin-left: 0.3rem;
+				opacity: 0.75;
+			}
+
+			.image-deleted, .image-unavailable {
+				font-family: var(--mono);
+				font-size: 0.78rem;
+				color: var(--muted);
+				padding: 0.4rem 0.6rem;
+				border: 1px dashed var(--border);
+				border-radius: 4px;
+			}
+
+			.post-comment {
+				font-size: 0.9rem;
+				line-height: 1.65;
+				max-width: 72ch;
+				white-space: pre-wrap;
+				word-break: break-word;
+			}
+
+			.post-comment .greentext { color: #4a7c3f; }
+			@media (prefers-color-scheme: dark) {
+				.post-comment .greentext { color: #7ec672; }
+			}
+
+			.post-comment .quotelink {
+				color: var(--accent);
+				font-family: var(--mono);
+				font-size: 0.85rem;
+			}
+
+			.post-comment .deadlink {
+				color: var(--muted);
+				text-decoration: line-through;
+				font-family: var(--mono);
+				font-size: 0.85rem;
+			}
+
+			.empty-state {
+				padding: 3rem 0;
+				color: var(--muted);
+				font-family: var(--mono);
+				font-size: 0.85rem;
+			}
+		</style>
+
+		<a class="back-link" href={ templ.SafeURL("/board/" + boardName) }>← /{ boardName }/</a>
+
+		<h1>Thread No.{ fmt.Sprintf("%d", threadNo) }</h1>
+		<p class="page-meta">
+			/{ boardName }/ &nbsp;·&nbsp; { fmt.Sprintf("%d posts", len(posts)) }
+		</p>
+
+		if len(posts) == 0 {
+			<p class="empty-state">no posts found for this thread.</p>
+		} else {
+			<div class="thread">
+				for i, p := range posts {
+					@postElement(p, images[p.ID], i == 0)
+				}
+			</div>
+		}
+	}
+}
+
+func formatComment(raw string) string {
+	s := raw
+
+	s = strings.ReplaceAll(s, "<br>", "\n")
+	s = strings.ReplaceAll(s, "<br/>", "\n")
+	s = strings.ReplaceAll(s, "<br />", "\n")
+
+	tagRe := regexp.MustCompile(`<[^>]+>`)
+	s = tagRe.ReplaceAllString(s, "")
+
+	//this doesnt make sense, trust me bro
+	s = html.UnescapeString(s)
+	s = html.EscapeString(s)
+
+	quoteLinkRe := regexp.MustCompile(`(?m)&gt;&gt;(\d+)`)
+	s = quoteLinkRe.ReplaceAllString(s, `<a class="quotelink" href="#p$1">&gt;&gt;$1</a>`)
+
+	greentextRe := regexp.MustCompile(`(?m)^&gt;(.*)$`)
+	s = greentextRe.ReplaceAllString(s, `<span class="greentext">&gt;$1</span>`)
+
+	return s
+}
+
+func formatBytes(b int) string {
+	switch {
+	case b >= 1024*1024:
+		return fmt.Sprintf("%.1f MB", float64(b)/1024/1024)
+	case b >= 1024:
+		return fmt.Sprintf("%.1f KB", float64(b)/1024)
+	default:
+		return fmt.Sprintf("%d B", b)
+	}
+}
