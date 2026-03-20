@@ -112,6 +112,7 @@ templ boardPage(boardName string, threads []database.Thread) {
 								if t.IsArchived == 1 {
 									<span class="badge archived">archived</span>
 								} else {
+									//we'll have a 'last updated thingy'
 									<span class="badge">live</span>
 								}
 							</td>
