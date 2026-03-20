@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"patchy/database"
+	"strings"
 )
 
 templ postElement(p database.Post, images []database.Image, isOP bool) {
@@ -57,12 +58,17 @@ templ imageElement(img database.Image) {
 		if img.IsFileDeleted == 1 {
 			<div class="image-deleted">file deleted</div>
 		} else if img.LocalThumbnailPath != "" {
-			<a href={ templ.SafeURL(img.LocalPath) } target="_blank" rel="noopener">
+			{{
+				after, _ := strings.CutPrefix(img.LocalPath, "data/images")
+				after2, _ := strings.CutPrefix(img.LocalThumbnailPath, "data/images")
+				fmt.Println(img.LocalThumbnailPath, after2)
+			}}
+			<a href={ "/attachement" + after} target="_blank" rel="noopener">
 				<img
-					src={ img.LocalThumbnailPath }
+					src={ "/attachement" + after2 }
 					alt={ img.Filename + img.Ext }
-					width={ fmt.Sprintf("%d", img.ThumbnailWidth) }
-					height={ fmt.Sprintf("%d", img.ThumbnailHeight) }
+					width={ /*fmt.Sprintf("%d", img.ThumbnailWidth)*/ 100 }
+					height={ /*fmt.Sprintf("%d", img.ThumbnailHeight)*/ 100 }
 					loading="lazy"
 				/>
 			</a>

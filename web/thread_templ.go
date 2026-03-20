@@ -49,14 +49,14 @@ func threadPage(boardName string, threadNo int, posts []database.Post, images ma
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t/* ── thread layout ───────────────────────────────── */\n\t\t\t.thread { display: flex; flex-direction: column; gap: 0; }\n\n\t\t\t/* ── shared post shell ───────────────────────────── */\n\t\t\t.post {\n\t\t\t\tpadding: 0.9rem 0;\n\t\t\t\tborder-bottom: 1px solid var(--border);\n\t\t\t}\n\n\t\t\t.post-op {\n\t\t\t\tpadding-bottom: 1.25rem;\n\t\t\t\tmargin-bottom: 0.25rem;\n\t\t\t}\n\n\t\t\t.post-reply {\n\t\t\t\tpadding-left: 1.25rem;\n\t\t\t\tborder-left: 2px solid var(--border);\n\t\t\t\tmargin-left: 0.5rem;\n\t\t\t}\n\n\t\t\t/* ── post header ─────────────────────────────────── */\n\t\t\t.post-header {\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\talign-items: baseline;\n\t\t\t\tgap: 0.4rem 0.6rem;\n\t\t\t\tmargin-bottom: 0.55rem;\n\t\t\t\tfont-size: 0.82rem;\n\t\t\t}\n\n\t\t\t.post-subject {\n\t\t\t\tfont-weight: bold;\n\t\t\t\tcolor: var(--text);\n\t\t\t\tfont-size: 0.9rem;\n\t\t\t}\n\n\t\t\t.post-name  { color: #117a65; font-weight: bold; }\n\t\t\t.post-trip  { color: var(--muted); font-family: var(--mono); font-size: 0.78rem; }\n\t\t\t.post-capcode {\n\t\t\t\tbackground: #c0392b;\n\t\t\t\tcolor: #fff;\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.7rem;\n\t\t\t\tpadding: 0.1rem 0.4rem;\n\t\t\t\tborder-radius: 3px;\n\t\t\t}\n\n\t\t\t@media (prefers-color-scheme: dark) {\n\t\t\t\t.post-name { color: #48c9b0; }\n\t\t\t}\n\n\t\t\t.post-id {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.75rem;\n\t\t\t\tbackground: var(--border);\n\t\t\t\tpadding: 0.1rem 0.4rem;\n\t\t\t\tborder-radius: 3px;\n\t\t\t\tcolor: var(--muted);\n\t\t\t}\n\n\t\t\t.post-country {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.75rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tborder: 1px solid var(--border);\n\t\t\t\tpadding: 0.05rem 0.35rem;\n\t\t\t\tborder-radius: 3px;\n\t\t\t}\n\n\t\t\t.post-time {\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t}\n\n\t\t\t.post-no-link {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t}\n\n\t\t\t.post-no-link:hover { color: var(--accent); text-decoration: none; }\n\n\t\t\t/* ── images ──────────────────────────────────────── */\n\t\t\t.post-images {\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\tgap: 0.75rem;\n\t\t\t\tmargin-bottom: 0.6rem;\n\t\t\t}\n\n\t\t\t.post-image { margin: 0; }\n\n\t\t\t.post-image img {\n\t\t\t\tdisplay: block;\n\t\t\t\tmax-width: 200px;\n\t\t\t\tmax-height: 200px;\n\t\t\t\tborder-radius: 4px;\n\t\t\t\tborder: 1px solid var(--border);\n\t\t\t\tobject-fit: cover;\n\t\t\t}\n\n\t\t\t.image-meta {\n\t\t\t\tfont-size: 0.72rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tmargin-top: 0.25rem;\n\t\t\t\tmax-width: 200px;\n\t\t\t\toverflow: hidden;\n\t\t\t\ttext-overflow: ellipsis;\n\t\t\t\twhite-space: nowrap;\n\t\t\t}\n\n\t\t\t.image-dim, .image-size {\n\t\t\t\tmargin-left: 0.3rem;\n\t\t\t\topacity: 0.75;\n\t\t\t}\n\n\t\t\t.image-deleted, .image-unavailable {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tpadding: 0.4rem 0.6rem;\n\t\t\t\tborder: 1px dashed var(--border);\n\t\t\t\tborder-radius: 4px;\n\t\t\t}\n\n\t\t\t/* ── comment body ────────────────────────────────── */\n\t\t\t.post-comment {\n\t\t\t\tfont-size: 0.9rem;\n\t\t\t\tline-height: 1.65;\n\t\t\t\tmax-width: 72ch;\n\t\t\t\twhite-space: pre-wrap;\n\t\t\t\tword-break: break-word;\n\t\t\t}\n\n\t\t\t.post-comment .greentext { color: #4a7c3f; }\n\t\t\t@media (prefers-color-scheme: dark) {\n\t\t\t\t.post-comment .greentext { color: #7ec672; }\n\t\t\t}\n\n\t\t\t.post-comment .quotelink {\n\t\t\t\tcolor: var(--accent);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\n\t\t\t.post-comment .deadlink {\n\t\t\t\tcolor: var(--muted);\n\t\t\t\ttext-decoration: line-through;\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\n\t\t\t/* ── empty state ─────────────────────────────────── */\n\t\t\t.empty-state {\n\t\t\t\tpadding: 3rem 0;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\t\t</style> <a class=\"back-link\" href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\t\t.thread { display: flex; flex-direction: column; gap: 0; }\n\n\t\t\t.post {\n\t\t\t\tpadding: 0.9rem 0;\n\t\t\t\tborder-bottom: 1px solid var(--border);\n\t\t\t}\n\n\t\t\t.post-op {\n\t\t\t\tpadding-bottom: 1.25rem;\n\t\t\t\tmargin-bottom: 0.25rem;\n\t\t\t}\n\n\t\t\t.post-reply {\n\t\t\t\tpadding-left: 1.25rem;\n\t\t\t\tborder-left: 2px solid var(--border);\n\t\t\t\tmargin-left: 0.5rem;\n\t\t\t}\n\n\t\t\t.post-header {\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\talign-items: baseline;\n\t\t\t\tgap: 0.4rem 0.6rem;\n\t\t\t\tmargin-bottom: 0.55rem;\n\t\t\t\tfont-size: 0.82rem;\n\t\t\t}\n\n\t\t\t.post-subject {\n\t\t\t\tfont-weight: bold;\n\t\t\t\tcolor: var(--text);\n\t\t\t\tfont-size: 0.9rem;\n\t\t\t}\n\n\t\t\t.post-name  { color: #117a65; font-weight: bold; }\n\t\t\t.post-trip  { color: var(--muted); font-family: var(--mono); font-size: 0.78rem; }\n\t\t\t.post-capcode {\n\t\t\t\tbackground: #c0392b;\n\t\t\t\tcolor: #fff;\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.7rem;\n\t\t\t\tpadding: 0.1rem 0.4rem;\n\t\t\t\tborder-radius: 3px;\n\t\t\t}\n\n\t\t\t@media (prefers-color-scheme: dark) {\n\t\t\t\t.post-name { color: #48c9b0; }\n\t\t\t}\n\n\t\t\t.post-id {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.75rem;\n\t\t\t\tbackground: var(--border);\n\t\t\t\tpadding: 0.1rem 0.4rem;\n\t\t\t\tborder-radius: 3px;\n\t\t\t\tcolor: var(--muted);\n\t\t\t}\n\n\t\t\t.post-country {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.75rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tborder: 1px solid var(--border);\n\t\t\t\tpadding: 0.05rem 0.35rem;\n\t\t\t\tborder-radius: 3px;\n\t\t\t}\n\n\t\t\t.post-time {\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t}\n\n\t\t\t.post-no-link {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t}\n\n\t\t\t.post-no-link:hover { color: var(--accent); text-decoration: none; }\n\n\t\t\t.post-images {\n\t\t\t\tdisplay: flex;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\tgap: 0.75rem;\n\t\t\t\tmargin-bottom: 0.6rem;\n\t\t\t}\n\n\t\t\t.post-image { margin: 0; }\n\n\t\t\t.post-image img {\n\t\t\t\tdisplay: block;\n\t\t\t\tmax-width: 200px;\n\t\t\t\tmax-height: 200px;\n\t\t\t\tborder-radius: 4px;\n\t\t\t\tborder: 1px solid var(--border);\n\t\t\t\tobject-fit: cover;\n\t\t\t}\n\n\t\t\t.image-meta {\n\t\t\t\tfont-size: 0.72rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tmargin-top: 0.25rem;\n\t\t\t\tmax-width: 200px;\n\t\t\t\toverflow: hidden;\n\t\t\t\ttext-overflow: ellipsis;\n\t\t\t\twhite-space: nowrap;\n\t\t\t}\n\n\t\t\t.image-dim, .image-size {\n\t\t\t\tmargin-left: 0.3rem;\n\t\t\t\topacity: 0.75;\n\t\t\t}\n\n\t\t\t.image-deleted, .image-unavailable {\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.78rem;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tpadding: 0.4rem 0.6rem;\n\t\t\t\tborder: 1px dashed var(--border);\n\t\t\t\tborder-radius: 4px;\n\t\t\t}\n\n\t\t\t.post-comment {\n\t\t\t\tfont-size: 0.9rem;\n\t\t\t\tline-height: 1.65;\n\t\t\t\tmax-width: 72ch;\n\t\t\t\twhite-space: pre-wrap;\n\t\t\t\tword-break: break-word;\n\t\t\t}\n\n\t\t\t.post-comment .greentext { color: #4a7c3f; }\n\t\t\t@media (prefers-color-scheme: dark) {\n\t\t\t\t.post-comment .greentext { color: #7ec672; }\n\t\t\t}\n\n\t\t\t.post-comment .quotelink {\n\t\t\t\tcolor: var(--accent);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\n\t\t\t.post-comment .deadlink {\n\t\t\t\tcolor: var(--muted);\n\t\t\t\ttext-decoration: line-through;\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\n\t\t\t.empty-state {\n\t\t\t\tpadding: 3rem 0;\n\t\t\t\tcolor: var(--muted);\n\t\t\t\tfont-family: var(--mono);\n\t\t\t\tfont-size: 0.85rem;\n\t\t\t}\n\t\t</style> <a class=\"back-link\" href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 templ.SafeURL
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/board/" + boardName))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 177, Col: 66}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 171, Col: 66}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -69,7 +69,7 @@ func threadPage(boardName string, threadNo int, posts []database.Post, images ma
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(boardName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 177, Col: 85}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 171, Col: 85}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -82,7 +82,7 @@ func threadPage(boardName string, threadNo int, posts []database.Post, images ma
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", threadNo))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 179, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 173, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -95,7 +95,7 @@ func threadPage(boardName string, threadNo int, posts []database.Post, images ma
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(boardName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 181, Col: 15}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 175, Col: 15}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -108,7 +108,7 @@ func threadPage(boardName string, threadNo int, posts []database.Post, images ma
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d posts", len(posts)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 181, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/thread.templ`, Line: 175, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -149,47 +149,29 @@ func threadPage(boardName string, threadNo int, posts []database.Post, images ma
 	})
 }
 
-// formatComment applies basic imageboard markup to a raw comment string.
-// 4chan stores comments as HTML, so we:
-//  1. Convert <br> to newlines and strip all other tags (including <wbr>, <a>, <span>, etc.)
-//  2. Decode all HTML entities (&amp; &lt; &gt; &quot; &#39; numeric refs, etc.) to plain text
-//  3. Re-escape the plain text so it is safe to embed in HTML
-//  4. Apply imageboard markup: >>quotelinks and >greentext
 func formatComment(raw string) string {
 	s := raw
 
-	// Normalise line breaks before stripping tags.
 	s = strings.ReplaceAll(s, "<br>", "\n")
 	s = strings.ReplaceAll(s, "<br/>", "\n")
 	s = strings.ReplaceAll(s, "<br />", "\n")
 
-	// Strip all remaining HTML tags.
 	tagRe := regexp.MustCompile(`<[^>]+>`)
 	s = tagRe.ReplaceAllString(s, "")
 
-	// Decode every HTML entity to plain Unicode text.
-	// html.UnescapeString handles named entities (&amp; &lt; &gt; &quot; &apos; &nbsp; etc.)
-	// as well as numeric references (&#39; &#x27; and so on).
+	//this doesnt make sense, trust me bro
 	s = html.UnescapeString(s)
-
-	// Now s is plain text — re-escape it so it is safe in HTML output.
 	s = html.EscapeString(s)
 
-	// Apply imageboard markup on top of the escaped text.
-
-	// >>quotelinks must run before greentext so >>123 isn't caught by the > rule.
 	quoteLinkRe := regexp.MustCompile(`(?m)&gt;&gt;(\d+)`)
 	s = quoteLinkRe.ReplaceAllString(s, `<a class="quotelink" href="#p$1">&gt;&gt;$1</a>`)
 
-	// >greentext — lines that start with a single > (already escaped to &gt;)
-	// and are not quotelinks (those start with &gt;&gt;).
 	greentextRe := regexp.MustCompile(`(?m)^&gt;(.*)$`)
 	s = greentextRe.ReplaceAllString(s, `<span class="greentext">&gt;$1</span>`)
 
 	return s
 }
 
-// formatBytes converts a byte count to a human-readable string.
 func formatBytes(b int) string {
 	switch {
 	case b >= 1024*1024:

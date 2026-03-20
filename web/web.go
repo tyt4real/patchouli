@@ -21,6 +21,7 @@ func StartServer(addr, dbPath string) error {
 
 	mux := http.NewServeMux()
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
+	mux.Handle("/attachement/", http.StripPrefix("/attachement/", http.FileServer(http.Dir("data/images"))))
 	mux.HandleFunc("/", handleBoards(db))
 	mux.HandleFunc("/board/", handleBoardOrThread(db))
 
