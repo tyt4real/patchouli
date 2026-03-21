@@ -53,10 +53,4 @@ Run the web UI locally during development:
 go run cmd/webui/main.go
 ```
 
-Run the crawler (if separate executable is present):
-
-```bash
-go run crawler/crawler.go
-```
-
 Logs are printed to stdout; use your shell or a process manager for background running.
